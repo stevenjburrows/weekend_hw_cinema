@@ -44,11 +44,22 @@ class Film
     return customers.map { |customer| Customer.new(customer) }
   end
 
+  def self.find(id)
+    sql = "SELECT *
+    FROM films
+    WHERE id = $1"
+    values = [id]
+    results = SqlRunner.run(sql, values)
+    film_hash = results.first
+    film = Film.new(film_hash)
+    return film
+  end
+
 
   def self.all
     sql = "SELECT * FROM films"
     films = SqlRunner.run(sql)
-    return films.map { |film| Customer.new(film) }
+    return films.map { |film| Film.new(film) }
 
   end
 
